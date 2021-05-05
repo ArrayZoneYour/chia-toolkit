@@ -6,7 +6,7 @@
   "scripts": {
     "start": "ts-node index.ts",
     "test": "ts-node test.ts",
-    "smart-start": "ts-node scheduler.ts"
+    "smart-plot": "ts-node scheduler.ts"
   },
   "author": "",
   "license": "MIT",
