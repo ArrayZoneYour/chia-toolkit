@@ -17,13 +17,27 @@ const getActiveOutputSize = (unit = 'GB') => {
 
 const getActiveSSDs = (unit = 'GB', devices = ['nvme']) => {
   const dataRow: string[] = []
+  // add sata ssds
+  if (process.env.SSD_ADDON_LIST) {
+    const addonSSDs = process.env.SSD_ADDON_LIST.split(',')
+    addonSSDs.forEach((name) => {
+      devices.push(name.trim())
+    })
+  }
   devices.forEach((device) => {
     execSync(`df -h --block-size=${unit} | grep ${device} | grep media`)
       .toString()
       .split('\n')
       .filter((el) => el.length > 0)
       .forEach((el) => {
-        dataRow.push(el)
+        if (
+          process.env.SSD_IGNORE_LIST &&
+          !el.includes(process.env.SSD_IGNORE_LIST)
+        ) {
+          dataRow.push(el)
+        } else {
+          dataRow.push(el)
+        }
       })
   })
   const ssds: any = {}
