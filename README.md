@@ -7,7 +7,8 @@
 `.env`
 
 ```
-FINGERPRINT=xxxxxxx
+FARMER_EKY=xxxxxx
+POOL_KEY=xxxxxxx
 CHIA_PATH=/home/chia-miner/miner/chia-blockchain
 CHIA_BIN=/home/chia-miner/miner/chia-blockchain/venv/bin/chia
 OUTPUT_PATH=/media/chia-miner/ST-16T-0

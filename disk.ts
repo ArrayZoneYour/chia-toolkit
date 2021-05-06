@@ -30,11 +30,10 @@ const getActiveSSDs = (unit = 'GB', devices = ['nvme']) => {
       .split('\n')
       .filter((el) => el.length > 0)
       .forEach((el) => {
-        if (
-          process.env.SSD_IGNORE_LIST &&
-          !el.includes(process.env.SSD_IGNORE_LIST)
-        ) {
-          dataRow.push(el)
+        if (process.env.SSD_IGNORE_LIST) {
+          if (!el.includes(process.env.SSD_IGNORE_LIST)) {
+            dataRow.push(el)
+          }
         } else {
           dataRow.push(el)
         }

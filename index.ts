@@ -5,7 +5,6 @@ import { Progress } from './progress'
 config()
 
 const chiaPath = process.env.CHIA_PATH!
-const fingerprint = process.env.FINGERPRINT!
 
 const getFinalPath = async () => {
   // const finalPath = "/run/user/1000/gvfs/"
@@ -28,8 +27,18 @@ const createPlotProcess = async (config: PlotConfig, tasks: Progress[]) => {
   const queueSize = 1
   const threadNum = 6
   const finalPath = await getFinalPath()
-  const command = `cd ${chiaPath} && . ./activate && chia plots create -k ${kSize} -n ${queueSize} -a ${fingerprint} -t ${tmpPath} -d ${finalPath} -r ${threadNum}`
-  // console.log('command: ', command)
+  let command: string
+  if (process.env.FARMER_EKY && process.env.POOL_KEY) {
+    command = `cd ${chiaPath} && . ./activate && chia plots create -k ${kSize} -n ${queueSize} -f ${process.env.FARMER_EKY} -p ${process.env.POOL_KEY} -t ${tmpPath} -d ${finalPath} -r ${threadNum}`
+  } else {
+    command = `cd ${chiaPath} && . ./activate && chia plots create -k ${kSize} -n ${queueSize} -a ${process.env.FINGERPRINT} -t ${tmpPath} -d ${finalPath} -r ${threadNum}`
+  }
+  if (!command) {
+    console.error(
+      'Please setup FARMER_EKY + POOL_KEY / FINGERPRINT in .env file'
+    )
+    return
+  }
   const p = spawn(command, { shell: true })
   p.stdout?.on('data', (data: Buffer) => {
     const info = data.toString()
