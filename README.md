@@ -38,6 +38,6 @@ yarn smart-plot
   - [x] get current active chia plots' task
   - [x] get available storage size
   - [x] create new plot task automatically
-  - [ ] support ssd which size != 1T
+  - [x] support ssd which size != 1T
 - UI
   - [ ] init dashboard with basic operations
