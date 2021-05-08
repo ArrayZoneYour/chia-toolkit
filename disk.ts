@@ -46,6 +46,7 @@ const getActiveSSDs = (unit = 'GB', devices = ['nvme']) => {
     ssds[loc] = {}
     const currentSSD = ssds[loc]
     currentSSD.spareSize = +dataArr[1].replace(unit, '')
+    // TODO: add qouta when task's phase is moving final plots
     currentSSD.qouta = Math.floor(currentSSD.spareSize / 256.6)
   })
   const processes = getProcesses(false)

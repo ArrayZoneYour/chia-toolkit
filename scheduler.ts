@@ -21,10 +21,14 @@ const startNextTaskOrWait = (tasks: Progress[]) => {
       let taskNum = 0
       tasks.forEach((task) => {
         if (task.tmpPath === path) {
-          taskNum += 1
-          if (task.phase.startsWith('Computing table')) enable = false
+          if (task.phase.startsWith('Computing table')) {
+            taskNum += 1
+          }
         }
       })
+      if (taskNum >= Math.ceil(ssd.spareSize / 1024)) {
+        enable = false
+      }
       if (enable) {
         createPlotProcess({ verbose: false, tmpPath: path }, tasks)
         // console.log('Push new task to ' + path)
