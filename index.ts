@@ -1,6 +1,6 @@
 import { config } from 'dotenv'
 import { spawn } from 'child_process'
-import { Progress } from './progress'
+import { Progress, pool } from './progress'
 
 config()
 
@@ -19,7 +19,8 @@ interface PlotConfig {
 }
 
 const createPlotProcess = async (config: PlotConfig, tasks: Progress[]) => {
-  const progress = new Progress()
+  const progress = pool.acquire()
+  if (!progress) return
   tasks.push(progress)
   const { verbose, tmpPath } = config
   progress.tmpPath = tmpPath
@@ -125,6 +126,7 @@ const createPlotProcess = async (config: PlotConfig, tasks: Progress[]) => {
     if (idx >= 0) {
       tasks.splice(idx, 1)
     }
+    progress.release()
   })
 
   p.on('exit', (code) => {
