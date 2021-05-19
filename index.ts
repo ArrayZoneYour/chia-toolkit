@@ -90,8 +90,6 @@ const createPlotProcess = async (config: PlotConfig, tasks: Progress[]) => {
     } else if (progress.phase.startsWith('Compressing tables')) {
       if (info.includes('First computation pass')) {
         progress.update(128)
-        progress.stop()
-        progress.phase = ''
       } else if (info.includes('Second computation pass')) {
         progress.update(256)
         progress.stop()
